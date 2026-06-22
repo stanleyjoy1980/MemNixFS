@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "msvc-x64",
+      "displayName": "MSVC x64 (vcpkg)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/msvc-x64",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_TARGET_TRIPLET": "x64-windows",
+        "LMPFS_BUILD_MOUNT_WINFSP": "ON"
+      }
+    },
+    {
+      "name": "msvc-x64-debug",
+      "inherits": "msvc-x64",
+      "binaryDir": "${sourceDir}/build/msvc-x64-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "msvc-x64", "configurePreset": "msvc-x64" },
+    { "name": "msvc-x64-debug", "configurePreset": "msvc-x64-debug" }
+  ]
+}

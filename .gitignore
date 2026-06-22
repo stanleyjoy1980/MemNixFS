@@ -1,0 +1,94 @@
+# =============================================================================
+# MemNixFS — .gitignore
+# =============================================================================
+
+# ---- Logs (development scratch output, not source) -------------------------
+*.log
+mt*.log
+mount_test.log
+
+# ---- Build trees ------------------------------------------------------------
+build/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+CMakeUserPresets.json
+cmake_install.cmake
+compile_commands.json
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.aps
+*.exp
+*.lib
+*.ilk
+*.pdb
+*.idb
+*.tlog
+*.iobj
+*.ipdb
+x64/
+Debug/
+Release/
+
+# ---- vcpkg ------------------------------------------------------------------
+vcpkg_installed/
+vcpkg-manifest-install.log
+
+# ---- IDE / editor cruft -----------------------------------------------------
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---- Test artifacts ---------------------------------------------------------
+mnt_test/
+/tmp_*/
+test_output/
+lmpfs_btf_test/
+*_test_export/
+
+# ---- Symbol caches (downloaded / generated ISFs) ---------------------------
+symbols/linux/*.json
+symbols/linux/*.json.xz
+
+# ---- Memory dumps and forensic samples (large + sensitive) -----------------
+*.lime
+*.lime.compressed
+*.avml
+*.raw
+*.dmp
+*.mem
+*.vmem
+*.core
+core.*
+vmcore*
+
+# ---- Generated outputs ------------------------------------------------------
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# ---- Language-binding build artefacts --------------------------------------
+# .NET / MSBuild
+bindings/dotnet/**/bin/
+bindings/dotnet/**/obj/
+# Python
+bindings/python/**/__pycache__/
+*.pyc
+# Rust / Cargo
+bindings/rust/target/
+# Java / Maven
+bindings/java/target/
