@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Contribution guide
+    url: https://github.com/MemNixFS/MemNixFS/blob/main/CONTRIBUTING.md
+    about: How to propose work, the code style, and the PR checklist — please read before opening a PR.
